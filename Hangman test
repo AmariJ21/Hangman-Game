@@ -1,0 +1,51 @@
+import random
+
+def choose_word():
+    words = ["Mondays", "Tuesday", "python", "Movie", "Wingstop"]
+    return random.choice(words)
+
+def display_word(word, guessed_letters):
+    displayed_word = ""
+    for letter in word:
+        if letter in guessed_letters:
+            displayed_word += letter
+        else:
+            displayed_word += "_"
+    return displayed_word
+
+def hangman():
+    print("Welcome to Hangman!")
+    
+    secret_word = choose_word()
+    guessed_letters = []
+    attempts = 6  # Number of attempts allowed
+
+    while attempts > 0:
+        print("\nAttempts left:", attempts)
+        current_display = display_word(secret_word, guessed_letters)
+        print("Current word:", current_display)
+
+        guess = input("Enter a letter: ").lower()
+
+        if guess.isalpha() and len(guess) == 1:
+            if guess in guessed_letters:
+                print("You've already guessed that letter. Try again.")
+            elif guess in secret_word:
+                print("Good guess!")
+                guessed_letters.append(guess)
+            else:
+                print("Incorrect guess. Try again.")
+                guessed_letters.append(guess)
+                attempts -= 1
+        else:
+            print("Invalid input. Please enter a single letter.")
+
+        if "_" not in display_word(secret_word, guessed_letters):
+            print("\nCongratulations! You guessed the word:", secret_word)
+            break
+
+    if attempts == 0:
+        print("\nSorry, you're out of attempts. The word was:", secret_word)
+
+if __name__ == "__main__":
+    hangman()
